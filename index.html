@@ -84,7 +84,7 @@ const $=id=>document.getElementById(id);
 
 let upd;const v=id=>$(id).value.trim();
 function state(){const id=v('wo')?'WO-'+v('wo').replace(/^wo-?/i,''):(v('unit')?'Unit '+v('unit'):'');
- const act=!id?'':($('yes').checked&&v('story')&&v('labor'))?'CLOSE':'OPEN';return{id,act}}
+ const hm={open:'OPEN',update:'UPDATE',close:'CLOSE'}[location.hash.slice(1)];const act=!id?'':hm||(($('yes').checked&&v('story')&&v('labor'))?'CLOSE':'OPEN');return{id,act}}
 function files(){let n=0;document.querySelectorAll('.file').forEach(i=>n+=i.files.length);return n}
 function stype(){return (v('tech')||v('meter')||v('story')||v('labor')||$('yes').checked)?'Full':(files()?'Photos only':'Full')}
 upd=function(){const s=state(),b=$('banner'),t=stype();b.className=s.act?s.act.toLowerCase():'none';
@@ -140,9 +140,9 @@ function crop(){const vw=vid.videoWidth,vh=vid.videoHeight,r=vid.getBoundingClie
  const c=document.createElement('canvas');c.width=Math.round(w);c.height=Math.round(h);c.getContext('2d').drawImage(vid,x,y,w,h,0,0,c.width,c.height);return c}
 async function jpeg(c){for(let sc=1;sc>.2;sc*=.8){let cv=c;if(sc<1){cv=document.createElement('canvas');cv.width=c.width*sc|0;cv.height=c.height*sc|0;cv.getContext('2d').drawImage(c,0,0,cv.width,cv.height)}
  for(const q of[.85,.75,.65]){const b=await new Promise(r=>cv.toBlob(r,'image/jpeg',q));if(b&&b.size<=2e6)return b}}return new Promise(r=>c.toBlob(r,'image/jpeg',.5))}
-$('camshot').onclick=async()=>{if(!vid.videoWidth)return;blob=await jpeg(crop());$('camp').src=URL.createObjectURL(blob);cam.className='on prev'};
+$('camshot').onclick=async()=>{if(!vid.videoWidth)return;blob=await jpeg(crop());blob.used=false;$('camp').src=URL.createObjectURL(blob);cam.className='on prev'};
 $('camre').onclick=()=>{cam.className='on'};
-function add(){const dt=new DataTransfer();if(!inp.closest('.att').dataset.max)for(const f of inp.files)dt.items.add(f);
+function add(){if(!blob||blob.used)return;blob.used=true;const dt=new DataTransfer();if(!inp.closest('.att').dataset.max)for(const f of inp.files)dt.items.add(f);
  const d=new Date(),ts=d.toISOString().slice(0,19).replace(/[-:T]/g,'');dt.items.add(new File([blob],({fpm:'PMform',finv:'Invoice',fph:'Photo',uphoto:'Unit'}[inp.id]||'Photo')+'_'+ts+'_p'+(++pages)+'.jpg',{type:'image/jpeg',lastModified:Date.now()}));
  inp.files=dt.files;inp.dispatchEvent(new Event('change',{bubbles:true}))}
 $('camuse').onclick=()=>{add();if(!inp.closest('.att').dataset.max){$('camc').textContent=pages+' added'+(inp.id==='fpm'&&pages<2?' - now snap page 2':' - snap another or tap Done');cam.className='on'}else close()};
@@ -178,8 +178,8 @@ async function shrink(f){if(!f.type.startsWith('image/')||f.size<900e3||/gif/.te
 document.querySelectorAll('.att').forEach(w=>{const inp=w.querySelector('input.file'),id=inp.id,cap=$(id+'-cap'),pick=$(id+'-pick');
  const max=+w.dataset.max||0,min=+w.dataset.min||0;
  const set=fs=>{const dt=new DataTransfer();fs.forEach(f=>dt.items.add(f));inp.files=dt.files;inp.dispatchEvent(new Event('change',{bubbles:true}))};
- async function addFiles(list){let fs=[...list].filter(f=>f.type.startsWith('image/')||(f.type==='application/pdf'&&/pdf/.test(inp.accept)));if(!fs.length)return;
-  fs=await Promise.all(fs.map(shrink));set(max?fs.slice(-max):[...inp.files,...fs])}
+ async function addFiles(list){window.__pend=(window.__pend||0)+1;try{let fs=[...list].filter(f=>f.type.startsWith('image/')||(f.type==='application/pdf'&&/pdf/.test(inp.accept)));if(!fs.length)return;
+  fs=await Promise.all(fs.map(shrink));set(max?fs.slice(-max):[...inp.files,...fs])}finally{window.__pend--}}
  w.querySelector('.take').onclick=()=>{if(hasCam&&window.__camOpen)window.__camOpen(inp);else cap.click()};
  w.querySelector('.pick').onclick=()=>pick.click();
  [cap,pick].forEach(x=>x.addEventListener('change',async()=>{await addFiles(x.files);x.value=''}));
@@ -274,7 +274,8 @@ const b64=f=>new Promise((ok,no)=>{const r=new FileReader();r.onload=()=>ok(Stri
 async function squeeze(f,m,q){if(!f.type.startsWith('image/')||/gif/.test(f.type))return f;try{const bm=await createImageBitmap(f);const sc=Math.min(1,m/Math.max(bm.width,bm.height));const c=document.createElement('canvas');c.width=bm.width*sc|0;c.height=bm.height*sc|0;c.getContext('2d').drawImage(bm,0,0,c.width,c.height);const b=await new Promise(r=>c.toBlob(r,'image/jpeg',q));return b&&b.size<f.size?new File([b],f.name.replace(/\.\w+$/,'')+'.jpg',{type:'image/jpeg'}):f}catch(e){return f}}
 function fail(msg){B.disabled=false;B.textContent='Try again';document.querySelectorAll('.xtra').forEach(x=>x.remove());alert('NOT SENT: '+msg+'\nCheck your signal and tap Send again. If it keeps failing, call or text the shop.')}
 F.addEventListener('submit',async e=>{if(e.defaultPrevented)return;e.preventDefault();B.disabled=true;B.textContent='Sending... please wait';
- try{const fd=new FormData(F),fields={},files=[];
+ try{for(let w=0;(window.__pend||0)>0&&w<200;w++){B.textContent='Adding photos...';await new Promise(r=>setTimeout(r,100))}
+  const fd=new FormData(F),fields={},files=[];
   for(const [k,v] of fd.entries()){if(v instanceof File){if(v.size)files.push({k,f:v})}else fields[k]=fields[k]?fields[k]+', '+v:v}
   let list=files;for(const [m,q] of [[0,0],[1400,.6],[1100,.5],[900,.45]]){if(m)list=await Promise.all(list.map(async x=>({k:x.k,f:await squeeze(x.f,m,q)})));if(list.reduce((t,x)=>t+x.f.size,0)*1.37<CAP)break}
   const enc=await Promise.all(list.map(async (x,i)=>({filename:x.k+'_'+(i+1)+'_'+x.f.name,content:await b64(x.f)})));
