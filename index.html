@@ -1,0 +1,290 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow"><title>Fleet Shop Form - Town of Prescott Valley</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon.svg"><link rel="apple-touch-icon" href="icon.svg">
+<meta name="theme-color" content="#21396F"><meta name="apple-mobile-web-app-capable" content="yes">
+<style>
+body{font-family:Poppins,Arial,sans-serif;margin:0;background:#f2f4f7;font-size:18px}
+header{background:#21396F;color:#fff;padding:1rem;font-size:1.3rem;font-weight:bold}
+form{padding:1rem;max-width:640px;margin:auto}
+label{display:block;margin-top:1rem;font-weight:600}
+input,textarea,select{width:100%;box-sizing:border-box;font-size:18px;padding:.8rem;border:1px solid #aaa;border-radius:8px;margin-top:.3rem}
+textarea{min-height:5rem}.row{display:flex;gap:.5rem}.row>*{flex:1}
+.part{background:#fff;border:1px solid #ccc;border-radius:8px;padding:.5rem;margin-top:.5rem}
+button{font-size:1.1rem;padding:1rem;border-radius:10px;border:0;margin-top:1rem;width:100%}
+.add{background:#dde6ee}.del{background:#f6d5d5;padding:.5rem;margin-top:.4rem}
+#banner{position:sticky;top:0;padding:1rem;font-weight:bold;text-align:center;z-index:2}
+.close{background:#098560;color:#fff}.open{background:#FBB042;color:#000}.none{background:#999;color:#fff}
+.chk{display:flex;align-items:center;gap:.7rem}.chk input{width:2rem;height:2rem}
+#send{background:#21396F;color:#fff;font-size:1.4rem;font-weight:bold;min-height:64px}
+.tog label{display:flex;align-items:center;justify-content:center;gap:.6rem;background:#fff;border:2px solid #21396F;border-radius:10px;padding:1rem;margin-top:.3rem}.tog input{width:1.8rem;height:1.8rem;margin:0}
+body{padding-bottom:calc(100px + env(safe-area-inset-bottom))}form{padding-bottom:calc(90px + env(safe-area-inset-bottom))}#send{width:100%;margin-bottom:2rem}
+.fw{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:4px 0 8px}.fw input.file{position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;clip:rect(0 0 0 0)}.fbtn{display:inline-block;padding:14px 18px;min-height:48px;font-size:17px;font-weight:600;border:2px solid #154A94;border-radius:10px;background:#eff6ff;color:#154A94;cursor:pointer;margin:0}.fw input.file:focus+.fbtn{outline:3px solid #93c5fd}.fname{font-size:14px;color:#444;word-break:break-all;flex:1;min-width:120px}
+</style><style id="badge-fix">body{padding-bottom:calc(110px + env(safe-area-inset-bottom))!important}.hint{display:block;color:#555;font-size:15px;margin-top:.25rem}header{padding:20px 20px 16px!important}.pvlogo{display:block;width:240px;max-width:75%;height:auto;margin:0 0 14px}.ptitle{font-size:1.45rem;font-weight:700;letter-spacing:.04em}button,input,select,textarea{font-family:inherit}</style></head><body>
+<div id="nl-badge-frame" hidden></div><header><img src="pv-logo-white.png" alt="Town of Prescott Valley" class="pvlogo"><div class="ptitle">FLEET SHOP FORM</div></header>
+<div id="note" style="background:#EAF0F8;border-left:5px solid #21396F;padding:.8rem 1rem;font-size:17px"><b>How to use</b><ol style="margin:.4rem 0 .2rem;padding-left:1.4rem;line-height:1.45"><li>Pick your name.</li><li>Type the unit # or WO #.</li><li>Explain in as much detail as you can the work performed, or the problem that needs a work order.</li><li>Add miles or hours, your time, and the condition.</li><li>Snap every invoice page and both PM sheet pages, then hit <b>Send to shop</b>.</li></ol><span style="font-size:15px">Short on time? Do steps 1, 2 and 5 now and finish the rest later.</span></div>
+<div id="banner" class="none">Start with the unit # or WO #</div>
+<div id="missbar" role="alert" style="display:none;position:sticky;top:0;z-index:2147483000;background:#CC2026;color:#fff;font-weight:bold;padding:.8rem 1rem;border-radius:8px;margin-bottom:.8rem;font-size:18px"></div>
+<form id="f" name="shop-form" novalidate action="thanks.html" method="POST" enctype="multipart/form-data">
+<input type="hidden" name="subject" id="subj" value="Shop form" data-remove-prefix>
+<input type="hidden" name="Action" id="action" value="">
+<input type="hidden" name="Submission Type" id="stype" value="">
+<input type="text" name="_honey" style="display:none">
+<label>Your name (required)</label><select name="Technician" id="tech" required><option value="">Tap to pick your name</option><option>Pete Dow</option><option>Shane Nelson</option><option>Jeremy Swan</option><option>Dan Yates</option></select>
+<div class="row"><div><label for="wo">WO #</label><input name="WO Number" id="wo" inputmode="numeric" placeholder="e.g. 20865"><small style="display:block;color:#666;font-size:13px;margin-top:.25rem">The work order number, if you have one. Leave it blank and we'll open a new one.</small></div>
+<div><label for="unit">Unit #</label><input name="Unit Number" id="unit" placeholder="e.g. 1174"><small style="display:block;color:#666;font-size:13px;margin-top:.25rem">The number on the truck or equipment.</small></div></div>
+<div style="font-size:15px;font-weight:600;color:#21396F;margin-top:.3rem">You need a unit # or a WO #. One is enough.</div>
+<div id="idmsg" role="alert" style="display:none;color:#b91c1c;font-weight:600;margin-top:.4rem">Put in the unit # or WO # (at least one).</div>
+
+<div class="row"><div><label>Miles / hours</label><input name="Meter" id="meter" inputmode="decimal" placeholder="e.g. 3430"></div>
+<div><label>Miles or hours?</label><select name="Meter Units"><option>Miles</option><option>Hours</option></select></div></div>
+<small class="hint">The odometer or hour meter reading right now.</small>
+<label for="story" id="storyL">What was done / what's wrong</label><textarea name="Story" id="story" style="min-height:9rem" placeholder="e.g. Replaced front brake pads and rotors both sides. Calipers checked OK."></textarea>
+<small class="hint">Explain in as much detail as you can the work performed, or the problem that needs a work order. Don't want to type? Tap the mic on the keyboard and talk.</small>
+<label>Your time (hours)</label><input name="Time Spent (hrs)" id="labor" inputmode="decimal" placeholder="e.g. 1.5"><small class="hint">Hours you worked on it. Half an hour = 0.5.</small>
+<label>Condition of the unit</label><select name="Asset Condition" id="cond"><option value="">Tap to pick 1 to 5</option><option>1 - Broken or unsafe, take out of service</option><option>2 - Poor, needs repair soon</option><option>3 - Fair, normal wear, watch it</option><option>4 - Good, minor wear</option><option>5 - Like new, no issues</option></select><small class="hint">How the unit is overall. 1 = take it out of service, 5 = like new.</small>
+<label>Invoices / receipts</label><small class="hint">Snap every page of every parts invoice. Lay it flat and fill the screen.</small><div class="att" data-for="finv"><input type="file" class="file" name="attachment_invoice" id="finv" accept="image/*,application/pdf" multiple hidden><input type="file" class="capin" id="finv-cap" accept="image/*" capture="environment" hidden><input type="file" class="pickin" id="finv-pick" accept="image/*,application/pdf" multiple hidden>
+<button type="button" class="bigbtn take">&#128247; Take photo</button><button type="button" class="bigbtn pick">&#128193; Choose file</button><div class="badge" id="finv-b"></div><div class="warn" id="finv-w"></div><div class="thumbs" id="finv-t"></div><span class="fname" id="finv-n" hidden></span></div>
+<label>PM sheet (both pages)</label><small class="hint">Snap page 1, then tap again for page 2.</small><div class="att" data-for="fpm" data-min="2"><input type="file" class="file" name="attachment_pmform" id="fpm" accept="image/*,application/pdf" multiple hidden><input type="file" class="capin" id="fpm-cap" accept="image/*" capture="environment" hidden><input type="file" class="pickin" id="fpm-pick" accept="image/*,application/pdf" multiple hidden>
+<button type="button" class="bigbtn take">&#128247; Take photo</button><button type="button" class="bigbtn pick">&#128193; Choose file</button><div class="badge" id="fpm-b"></div><div class="warn" id="fpm-w"></div><div class="thumbs" id="fpm-t"></div><span class="fname" id="fpm-n" hidden></span></div>
+<label>Other photos (optional)</label><small class="hint">Damage, worn parts, anything worth showing.</small><div class="att" data-for="fph"><input type="file" class="file" name="attachment_photos" id="fph" accept="image/*" multiple hidden><input type="file" class="capin" id="fph-cap" accept="image/*" capture="environment" hidden><input type="file" class="pickin" id="fph-pick" accept="image/*" multiple hidden>
+<button type="button" class="bigbtn take">&#128247; Take photo</button><button type="button" class="bigbtn pick">&#128193; Choose file</button><div class="badge" id="fph-b"></div><div class="warn" id="fph-w"></div><div class="thumbs" id="fph-t"></div><span class="fname" id="fph-n" hidden></span></div>
+<small>Photos get shrunk for you. If it says over 10 MB, take a few out.</small>
+<label>Is the job done?</label>
+<div class="row tog"><label><input type="radio" name="Work Complete" value="Yes" id="yes"> Yes</label><label><input type="radio" name="Work Complete" value="No" id="no" checked> No, still working on it</label></div>
+<label>Driver name (optional)</label><input name="Driver Name" id="dname">
+<label>Driver phone or email (optional)</label><input name="Driver Contact" id="dcontact" inputmode="email">
+<label>Loaner unit # (optional)</label><input name="Loaner Unit" id="loaner" placeholder="Only if you gave them a loaner">
+<div id="stypeShow" style="margin-top:1rem;font-weight:600">Submission type: -</div>
+<button id="send" type="submit">Send to shop</button>
+</form>
+<script>
+(function(){const $=id=>document.getElementById(id),F=$('f'),bar=$('missbar');
+function lab(el){const w=el.closest('.att');let l=w?w.previousElementSibling:null;if(!l||l.tagName!=='LABEL'){l=el.id?document.querySelector('label[for="'+el.id+'"]'):null}if(!l){l=el.previousElementSibling;while(l&&l.tagName!=='LABEL')l=l.previousElementSibling}return l?l.textContent.replace(/\(.*?\)/g,'').replace(/required/i,'').replace(/[:\s]+$/,'').trim():(el.name||'Field')}
+function mark(el){const t=el.closest('.att')||el;t.classList.add('missing');if(!t.nextElementSibling||!t.nextElementSibling.classList.contains('reqnote')){const n=document.createElement('div');n.className='reqnote';n.textContent='Required';t.after(n)}}
+function clear(){document.querySelectorAll('.missing').forEach(x=>x.classList.remove('missing'));document.querySelectorAll('.reqnote').forEach(x=>x.remove());bar.style.display='none'}
+function check(){clear();const miss=[],els=[];
+ const val=id=>($(id)&&$(id).value||'').trim();
+ if(!(val('wo')||val('unit'))&&!$('unit').required){miss.push('Unit # or WO #');els.push($('unit'));mark($('wo'));mark($('unit'))}
+ F.querySelectorAll('[required],.att[data-required] input.file').forEach(el=>{if(el.disabled)return;let empty;
+  if(el.type==='file')empty=!el.files.length;else if(el.type==='checkbox'||el.type==='radio')empty=!F.querySelector('[name="'+el.name+'"]:checked');else empty=!el.value.trim();
+  if(empty){const L=lab(el);if(!miss.includes(L)){miss.push(L);els.push(el)}mark(el)}});
+ if(miss.length){bar.innerHTML='&#9888; Not sent yet. Fill in: '+miss.join(', ');bar.style.display='block';
+  const first=els[0].closest('.att')||els[0];first.scrollIntoView({behavior:'smooth',block:'center'});try{if(els[0].type!=='file'&&!els[0].hidden)els[0].focus({preventScroll:true})}catch(e){}
+  if(navigator.vibrate)try{navigator.vibrate([200,100,200])}catch(e){}}
+ return !miss.length}
+F.addEventListener('submit',e=>{if(!check()){e.preventDefault();e.stopImmediatePropagation()}});
+F.addEventListener('change',()=>{if(bar.style.display==='block')check()});F.addEventListener('input',()=>{if(bar.style.display==='block')check()});
+})();
+</script>
+<style>.missing{outline:3px solid #c00!important;outline-offset:2px;border-radius:8px}.reqnote{color:#c00;font-weight:bold;font-size:15px;margin:.2rem 0 .4rem}</style>
+<script>
+const $=id=>document.getElementById(id);
+
+let upd;const v=id=>$(id).value.trim();
+function state(){const id=v('wo')?'WO-'+v('wo').replace(/^wo-?/i,''):(v('unit')?'Unit '+v('unit'):'');
+ const act=!id?'':($('yes').checked&&v('story')&&v('labor'))?'CLOSE':'OPEN';return{id,act}}
+function files(){let n=0;document.querySelectorAll('.file').forEach(i=>n+=i.files.length);return n}
+function stype(){return (v('tech')||v('meter')||v('story')||v('labor')||$('yes').checked)?'Full':(files()?'Photos only':'Full')}
+upd=function(){const s=state(),b=$('banner'),t=stype();b.className=s.act?s.act.toLowerCase():'none';
+ b.textContent=s.act?(t==='Photos only'?'Photos only for '+s.id:'This will '+s.act+' '+s.id):'Start with the unit # or WO #';
+ $('stypeShow').textContent='Submission type: '+(s.id?t:'-')}
+function idchk(){const ok=!!(v('wo')||v('unit')),m=ok?'':'Put in the unit # or WO # (at least one).';$('unit').setCustomValidity(m);$('wo').setCustomValidity(m);$('idmsg').style.display=ok||!idchk.shown?'none':'block';return ok}
+['wo','unit'].forEach(i=>$(i).addEventListener('invalid',()=>{idchk.shown=1;$('idmsg').style.display='block'}));
+function storyL(){const L=$('storyL'),S=$('story');let m='';if(v('wo')||v('unit'))m=$('yes').checked?'done':(v('wo')?'done':'open');
+ if(m==='open'){L.textContent="What was done / what's wrong";S.placeholder='e.g. Check engine light on, rough idle at stops'}
+ else if(m==='done'){L.textContent='What was done / what\'s wrong';S.placeholder='e.g. Replaced front brake pads and rotors both sides. Calipers checked OK.'}
+ else{L.textContent='What was done / what\'s wrong';S.placeholder='e.g. Replaced front brake pads and rotors both sides. Calipers checked OK.'}}
+const upd0=upd;upd=function(){upd0();idchk();storyL()};upd();
+$('f').addEventListener('input',upd);$('f').addEventListener('change',upd);
+$('f').addEventListener('submit',e=>{if(!idchk()){e.preventDefault();idchk.shown=1;idchk();$('unit').focus();return}const s=state();if(!s.act){e.preventDefault();alert('Put in the unit # or WO #.');return}
+ let t=0;document.querySelectorAll('.file').forEach(i=>{for(const f of i.files)t+=f.size});
+ if(t>7.5e6){e.preventDefault();alert('Too many photos (over 8 MB total). Take a few out and try again.');return}
+ const ty=stype();$('stype').value=ty;
+ $('subj').value='Shop form - '+s.id+' - '+(ty==='Photos only'?'Photos':'Full'+(s.act==='CLOSE'?' (CLOSE)':''));
+ $('action').value=ty==='Photos only'?'PHOTOS':s.act;$('send').disabled=true;$('send').textContent='Sending... please wait'});
+
+</script><style>
+#cam{position:fixed;inset:0;background:#000;z-index:2147483646;display:none;flex-direction:column;color:#fff;font-family:sans-serif}
+#cam.on{display:flex}#camv,#camp{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}#camp{object-fit:contain;background:#000;display:none}
+#camg{position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);box-shadow:0 0 0 9999px rgba(0,0,0,.55);border:1px dashed rgba(255,255,255,.5)}
+#camg i{position:absolute;width:28px;height:28px;border:4px solid #4ade80}
+#camg i:nth-child(1){left:-4px;top:-4px;border-right:0;border-bottom:0}#camg i:nth-child(2){right:-4px;top:-4px;border-left:0;border-bottom:0}
+#camg i:nth-child(3){left:-4px;bottom:-4px;border-right:0;border-top:0}#camg i:nth-child(4){right:-4px;bottom:-4px;border-left:0;border-top:0}
+#camh{position:absolute;top:14px;left:0;right:0;text-align:center;font-size:17px;font-weight:600;text-shadow:0 1px 3px #000}
+#camc{position:absolute;top:44px;left:0;right:0;text-align:center;font-size:14px;color:#cfc}
+#cambar{position:absolute;bottom:0;left:0;right:0;padding:14px 14px calc(40px + env(safe-area-inset-bottom));display:flex;justify-content:space-around;align-items:center;gap:10px;background:rgba(0,0,0,.85);z-index:2147483647}
+#cambar button{background:#334155;color:#fff;border:2px solid #fff;border-radius:12px;padding:0 12px;min-height:64px;font-size:18px;font-weight:700;flex:1;margin:0;width:auto}#cambar #camuse{background:#16a34a;border-color:#16a34a}#cambar #camdone{background:#154A94;border-color:#154A94}#cambar #camre{background:#b91c1c;border-color:#b91c1c}
+#camshot{flex:0 0 96px!important;width:96px;height:96px;min-height:96px!important;border-radius:50%!important;background:#fff!important;border:5px solid #888!important;padding:0!important}
+#cam .pv{display:none}#cam.prev .pv{display:block}#cam.prev .lv{display:none}#cam.prev #camp{display:block}#cam.prev #camg,#cam.prev #camh{display:none}
+</style>
+<div id="cam"><video id="camv" playsinline muted autoplay></video><img id="camp" alt="Captured page"><div id="camg"><i></i><i></i><i></i><i></i></div>
+<div id="camh">Line up the page inside the frame</div><div id="camc"></div>
+<div id="cambar"><button type="button" class="lv" id="camx">Done</button><button type="button" class="lv" id="camshot" aria-label="Capture"></button><button type="button" class="lv" id="camflip">Flip</button>
+<button type="button" class="pv" id="camre">Retake</button><button type="button" class="pv" id="camuse">&#10133; Add &amp; next page</button><button type="button" class="pv" id="camdone">&#10004; Add &amp; done</button></div>
+<button type="button" class="lv" id="camfile" style="position:absolute;bottom:calc(150px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);width:auto;background:#fff;color:#000;border:0;border-radius:12px;min-height:56px;padding:0 22px;font-size:18px;font-weight:700;z-index:2147483647">Choose a file instead</button></div>
+<script>
+(()=>{const $=id=>document.getElementById(id);
+const phone=matchMedia('(pointer:coarse)').matches&&innerWidth<820&&navigator.mediaDevices&&navigator.mediaDevices.getUserMedia;
+if(!phone)return;
+let inp,stream,facing='environment',blob,pages=0;const cam=$('cam'),vid=$('camv');
+function guide(){const W=innerWidth,H=innerHeight;let w=W*.86,h=w*11/8.5;if(h>H*.68){h=H*.68;w=h*8.5/11}const g=$('camg');g.style.width=w+'px';g.style.height=h+'px';return g}
+async function start(){stop();stream=await navigator.mediaDevices.getUserMedia({audio:false,video:{facingMode:{ideal:facing},width:{ideal:4096},height:{ideal:4096}}});vid.srcObject=stream;await vid.play().catch(()=>{});guide()}
+function stop(){if(stream)stream.getTracks().forEach(t=>t.stop());stream=null}
+function close(){stop();cam.className='';document.body.style.overflow=''}
+async function open(i){inp=i;pages=0;$('camc').textContent=i.id==='fpm'?'PM sheet: snap page 1, then page 2':'';try{cam.className='on';document.body.style.overflow='hidden';await start()}catch(e){close();document.getElementById(inp.id+'-cap').click()}}
+function crop(){const vw=vid.videoWidth,vh=vid.videoHeight,r=vid.getBoundingClientRect(),gr=$('camg').getBoundingClientRect();
+ const s=Math.max(r.width/vw,r.height/vh),ox=(r.width-vw*s)/2,oy=(r.height-vh*s)/2;
+ let x=(gr.left-r.left-ox)/s,y=(gr.top-r.top-oy)/s,w=gr.width/s,h=gr.height/s;x=Math.max(0,x);y=Math.max(0,y);w=Math.min(w,vw-x);h=Math.min(h,vh-y);
+ const c=document.createElement('canvas');c.width=Math.round(w);c.height=Math.round(h);c.getContext('2d').drawImage(vid,x,y,w,h,0,0,c.width,c.height);return c}
+async function jpeg(c){for(let sc=1;sc>.2;sc*=.8){let cv=c;if(sc<1){cv=document.createElement('canvas');cv.width=c.width*sc|0;cv.height=c.height*sc|0;cv.getContext('2d').drawImage(c,0,0,cv.width,cv.height)}
+ for(const q of[.85,.75,.65]){const b=await new Promise(r=>cv.toBlob(r,'image/jpeg',q));if(b&&b.size<=2e6)return b}}return new Promise(r=>c.toBlob(r,'image/jpeg',.5))}
+$('camshot').onclick=async()=>{if(!vid.videoWidth)return;blob=await jpeg(crop());$('camp').src=URL.createObjectURL(blob);cam.className='on prev'};
+$('camre').onclick=()=>{cam.className='on'};
+function add(){const dt=new DataTransfer();if(!inp.closest('.att').dataset.max)for(const f of inp.files)dt.items.add(f);
+ const d=new Date(),ts=d.toISOString().slice(0,19).replace(/[-:T]/g,'');dt.items.add(new File([blob],({fpm:'PMform',finv:'Invoice',fph:'Photo',uphoto:'Unit'}[inp.id]||'Photo')+'_'+ts+'_p'+(++pages)+'.jpg',{type:'image/jpeg',lastModified:Date.now()}));
+ inp.files=dt.files;inp.dispatchEvent(new Event('change',{bubbles:true}))}
+$('camuse').onclick=()=>{add();if(!inp.closest('.att').dataset.max){$('camc').textContent=pages+' added'+(inp.id==='fpm'&&pages<2?' - now snap page 2':' - snap another or tap Done');cam.className='on'}else close()};
+$('camdone').onclick=()=>{add();close()};
+$('camx').onclick=close;$('camfile').onclick=()=>{close();document.getElementById(inp.id+'-pick').click()};
+$('camflip').onclick=async()=>{facing=facing==='environment'?'user':'environment';try{await start()}catch(e){}};
+addEventListener('resize',guide);
+window.__camOpen=i=>open(i);
+})();
+</script>
+<style>
+.att{background:#fff;border:2px solid #cbd5e1;border-radius:12px;padding:12px;margin-top:.4rem}
+.att.over{border-color:#16a34a;background:#dcfce7}
+.bigbtn{display:block;width:100%;min-height:60px;margin:0 0 10px;font-size:20px;font-weight:700;border-radius:12px;border:0;color:#fff;background:#21396F;touch-action:manipulation}
+.bigbtn.pick{background:#fff;color:#21396F;border:3px solid #21396F}
+.badge{display:none;background:#16a34a;color:#fff;font-weight:700;border-radius:999px;padding:8px 14px;font-size:17px;margin:4px 0}
+.badge.on{display:inline-block}
+.warn{display:none;background:#fef3c7;color:#92400e;border-left:5px solid #d97706;padding:8px 10px;font-weight:600;font-size:16px;margin:6px 0}
+.warn.on{display:block}
+.thumbs{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
+.th{position:relative;width:88px;height:88px;border-radius:8px;border:1px solid #94a3b8;overflow:hidden;background:#f1f5f9;display:flex;align-items:center;justify-content:center;font-size:12px;text-align:center}
+.th img{width:100%;height:100%;object-fit:cover}
+.th .pg{position:absolute;left:0;bottom:0;background:rgba(0,0,0,.65);color:#fff;font-size:12px;padding:1px 5px;border-top-right-radius:6px}
+.th .x{position:absolute;top:0;right:0;width:36px;height:36px;margin:0;padding:0;border-radius:0 0 0 10px;background:#b91c1c;color:#fff;font-size:22px;line-height:36px;font-weight:700}
+</style>
+<script>
+(()=>{const $=id=>document.getElementById(id);
+const hasCam=matchMedia('(pointer:coarse)').matches&&innerWidth<820&&navigator.mediaDevices&&navigator.mediaDevices.getUserMedia;
+// shrink big photos so several pages fit under the 8 MB form limit
+async function shrink(f){if(!f.type.startsWith('image/')||f.size<900e3||/gif/.test(f.type))return f;
+ try{const bm=await createImageBitmap(f);const m=1800,sc=Math.min(1,m/Math.max(bm.width,bm.height));const c=document.createElement('canvas');c.width=bm.width*sc|0;c.height=bm.height*sc|0;c.getContext('2d').drawImage(bm,0,0,c.width,c.height);
+ const b=await new Promise(r=>c.toBlob(r,'image/jpeg',.8));if(!b||b.size>=f.size)return f;return new File([b],f.name.replace(/\.\w+$/,'')+'.jpg',{type:'image/jpeg',lastModified:Date.now()})}catch(e){return f}}
+document.querySelectorAll('.att').forEach(w=>{const inp=w.querySelector('input.file'),id=inp.id,cap=$(id+'-cap'),pick=$(id+'-pick');
+ const max=+w.dataset.max||0,min=+w.dataset.min||0;
+ const set=fs=>{const dt=new DataTransfer();fs.forEach(f=>dt.items.add(f));inp.files=dt.files;inp.dispatchEvent(new Event('change',{bubbles:true}))};
+ async function addFiles(list){let fs=[...list].filter(f=>f.type.startsWith('image/')||(f.type==='application/pdf'&&/pdf/.test(inp.accept)));if(!fs.length)return;
+  fs=await Promise.all(fs.map(shrink));set(max?fs.slice(-max):[...inp.files,...fs])}
+ w.querySelector('.take').onclick=()=>{if(hasCam&&window.__camOpen)window.__camOpen(inp);else cap.click()};
+ w.querySelector('.pick').onclick=()=>pick.click();
+ [cap,pick].forEach(x=>x.addEventListener('change',async()=>{await addFiles(x.files);x.value=''}));
+ ['dragenter','dragover'].forEach(t=>w.addEventListener(t,e=>{e.preventDefault();w.classList.add('over')}));
+ ['dragleave','drop'].forEach(t=>w.addEventListener(t,e=>{e.preventDefault();w.classList.remove('over')}));
+ w.addEventListener('drop',e=>addFiles(e.dataTransfer.files));
+ function render(){const fs=[...inp.files],t=$(id+'-t'),b=$(id+'-b'),wn=$(id+'-w');t.innerHTML='';
+  fs.forEach((f,k)=>{const d=document.createElement('div');d.className='th';
+   if(f.type.startsWith('image/')){const im=new Image();im.src=URL.createObjectURL(f);im.alt=f.name;d.appendChild(im)}else d.textContent='PDF '+f.name;
+   const pg=document.createElement('span');pg.className='pg';pg.textContent=(min?'Page ':'#')+(k+1);d.appendChild(pg);
+   const x=document.createElement('button');x.type='button';x.className='x';x.textContent='\u00d7';x.setAttribute('aria-label','Remove '+f.name);
+   x.onclick=()=>set(fs.filter((_,j)=>j!==k));d.appendChild(x);t.appendChild(d)});
+  const n=fs.length,ph=fs.filter(f=>f.type.startsWith('image/')).length;
+  b.textContent=n?(min?n+' of '+min+' pages attached':(ph===n?n+(n>1?' photos':' photo'):n+(n>1?' files':' file'))+' attached'):'';b.classList.toggle('on',!!n);
+  if(min&&n&&n<min){wn.textContent='\u26a0 PM sheets have 2 pages. You have '+n+'. Tap Take photo again for page '+(n+1)+'.';wn.classList.add('on')}else wn.classList.remove('on');
+  w.querySelector('.take').innerHTML=n&&!max?'&#128247; Take another photo'+(min&&n<min?' (page '+(n+1)+')':''):'&#128247; Take photo';}
+ inp.addEventListener('change',render);render();});
+// submit: first file stays on the original field name; extras go to name_2, name_3 ... (each gets its own field)
+$('f').addEventListener('submit',e=>{if(e.defaultPrevented)return;
+ const pm=$('fpm').files.length;if(pm===1&&!confirm('Only 1 PM sheet page. PM sheets have 2 pages. Send anyway?')){e.preventDefault();$('send').disabled=false;$('send').textContent='Send to shop';return}
+ document.querySelectorAll('.att input.file').forEach(inp=>{const fs=[...inp.files];if(fs.length<2)return;
+  fs.slice(1).forEach((f,k)=>{const x=document.createElement('input');x.type='file';x.name=inp.name+'_'+(k+2);x.hidden=true;const dt=new DataTransfer();dt.items.add(f);x.files=dt.files;x.className='xtra';inp.after(x)});
+  const dt=new DataTransfer();dt.items.add(fs[0]);inp.files=dt.files});
+ const h=document.createElement('input');h.type='hidden';h.name='Attachment Count';
+ h.value=[...document.querySelectorAll('.att input.file')].map(i=>i.name+': '+(i.files.length+document.querySelectorAll('input[name^="'+i.name+'_"]').length)).join('; ');$('f').appendChild(h)});
+addEventListener('pageshow',e=>{if(e.persisted){document.querySelectorAll('.xtra').forEach(x=>x.remove());$('send').disabled=false;$('send').textContent='Send to shop'}});
+})();
+</script>
+<style>
+#menu{max-width:640px;margin:auto;padding:1rem}#menu .mb{display:block;width:100%;min-height:96px;font-size:1.6rem;font-weight:700;border:0;border-radius:14px;margin:0 0 1rem;color:#fff;touch-action:manipulation}
+#menu .mo{background:#FBB042;color:#000}#menu .mu{background:#21396F}#menu .mc{background:#098560}#menu small{display:block;font-size:15px;font-weight:400;margin-top:.2rem}
+#back{display:none;background:#fff;color:#21396F;border:3px solid #21396F;font-weight:700;min-height:56px;margin:1rem auto 0;max-width:608px;width:calc(100% - 2rem)}
+#modeT{display:none;text-align:center;font-weight:700;font-size:1.4rem;padding:.8rem;color:#fff}
+body.m-none #f,body.m-none #note,body.m-none #banner{display:none}body:not(.m-none) #menu{display:none}body:not(.m-none) #back,body:not(.m-none) #modeT{display:block}
+body:not(.m-none) #banner{display:none}.mx{display:none}
+</style>
+<script>
+(function(){const $=id=>document.getElementById(id),F=$('f');document.body.classList.add('m-none');
+const H=document.querySelector('header');
+H.insertAdjacentHTML('afterend','<div id="menu"><div style="font-size:1.2rem;font-weight:700;margin:.5rem 0 1rem;color:#21396F">What are you doing?</div><button type="button" class="mb mo" data-m="open">Open Work Order<small>New problem on a unit</small></button><button type="button" class="mb mu" data-m="update">Update Work Order<small>Log time, parts, status</small></button><button type="button" class="mb mc" data-m="close">Close Work Order<small>Job is done</small></button></div><button type="button" id="back">&#8592; Back to menu</button><div id="modeT"></div>');
+const q=[];for(let h=.25;h<=12;h+=.25)q.push('<option>'+h.toFixed(2)+'</option>');const qs='<option value="">Tap to pick hours</option>'+q.join('');
+const X={
+ date:'<label for="xdate">Date</label><input type="date" name="Date" id="xdate" required>',
+ prio:'<label for="xprio">Priority</label><select name="Priority" id="xprio" required><option value="">Tap to pick 1 to 5</option><option>1 - Urgent, unit down / unsafe</option><option>2 - High, fix this week</option><option>3 - Normal</option><option>4 - Low, when there is time</option><option>5 - Next PM</option></select>',
+ notes:'<label for="xnotes">Notes (optional)</label><textarea name="Notes" id="xnotes"></textarea>',
+ qhrs:'<label for="xhrs" id="xhrsL">Labor hours</label><select name="Labor Hours" id="xhrs" required>'+qs+'</select><small class="hint">Quarter hours. 15 min = 0.25.</small>',
+ parts:'<label for="xparts">Parts used</label><textarea name="Parts Used" id="xparts" placeholder="e.g. 2x oil filter WIX 51515, 6 qt 5W-30"></textarea>',
+ status:'<label for="xstat">Status</label><select name="Status" id="xstat" required><option value="">Tap to pick</option><option>In progress</option><option>Waiting on parts</option><option>Waiting on vendor</option><option>On hold</option><option>Ready for QC</option></select>',
+ cause:'<label for="xcause">Cause (what caused it)</label><textarea name="Cause" id="xcause" required placeholder="e.g. Pads worn past limit"></textarea>',
+ sign:'<label class="chk" style="margin-top:1.2rem"><input type="checkbox" name="Signed Off" value="Yes - work complete and unit safe" id="xsign" required> I confirm the work is done and the unit is safe to go back in service</label><label for="xsname">Signed by (type your full name)</label><input name="Sign-off Name" id="xsname" required>'};
+const anchor=$('stypeShow');for(const k in X){const d=document.createElement('div');d.className='mx';d.dataset.k=k;d.innerHTML=X[k];anchor.before(d)}
+function grp(id){const el=$(id);if(!el)return[];const r=el.closest('.row');return r?[r]:[el]}
+// base field blocks
+const B={wo:[$('wo').parentElement,$('wo').closest('.row').nextElementSibling],meter:[...grp('meter'),$('meter').closest('.row').nextElementSibling],
+ labor:[$('labor'),$('labor').previousElementSibling,$('labor').nextElementSibling],
+ cond:[$('cond'),$('cond').previousElementSibling],
+ done:[$('yes').closest('.row'),$('yes').closest('.row').previousElementSibling],
+ driver:['dname','dcontact','loaner'].flatMap(i=>[$(i),$(i).previousElementSibling]),
+ pm:[document.querySelector('[data-for=fpm]'),document.querySelector('[data-for=fpm]').previousElementSibling,document.querySelector('[data-for=fpm]').previousElementSibling.previousElementSibling],
+ inv:[document.querySelector('[data-for=finv]'),document.querySelector('[data-for=finv]').previousElementSibling,document.querySelector('[data-for=finv]').previousElementSibling.previousElementSibling]};
+const M={open:{t:'OPEN WORK ORDER',c:'#FBB042',fc:'#000',base:['meter','driver'],x:[],story:['Complaint (what is wrong)','e.g. Check engine light on, rough idle at stops'],send:'Open work order'},
+ update:{t:'UPDATE WORK ORDER',c:'#21396F',fc:'#fff',base:['wo','inv','pm'],x:['qhrs','parts','status'],story:['Cause / notes','e.g. Found cracked coolant hose, ordered part'],send:'Send update'},
+ close:{t:'CLOSE WORK ORDER',c:'#098560',fc:'#fff',base:['wo','meter','cond','inv','pm'],x:['qhrs','parts'],story:['Correction (what you did to fix it)','e.g. Replaced front pads and rotors both sides'],send:'Close work order'}};
+let mode=null;
+function set(m){mode=M[m]?m:null;document.body.classList.toggle('m-none',!mode);
+ const all=Object.keys(B);all.forEach(k=>B[k].forEach(e=>{if(!e)return;const on=!mode||M[mode].base.includes(k);e.style.display=on?'':'none';(e.matches('input,select,textarea')?[e]:[...e.querySelectorAll('input,select,textarea')]).forEach(i=>i.disabled=!on)}));
+ document.querySelectorAll('.mx').forEach(d=>{const on=!!mode&&M[mode].x.includes(d.dataset.k);d.style.display=on?'block':'none';d.querySelectorAll('input,select,textarea').forEach(i=>i.disabled=!on)});
+ $('labor').disabled=true;// replaced by quarter-hour Labor Hours
+ if(!mode){scrollTo(0,0);return}const c=M[mode];$('modeT').textContent=c.t;$('modeT').style.background=c.c;$('modeT').style.color=c.fc;
+ $('storyL').textContent=c.story[0];$('story').placeholder=c.story[1];$('story').required=true;$('send').textContent=c.send;
+ $('wo').required=mode!=='open';$('unit').required=mode==='open';$('meter').required=mode==='close';$('cond').required=mode==='close';
+ $('xhrsL').textContent=mode==='close'?'Total labor hours':'Labor hours (this visit)';
+ if(mode==='close'){$('yes').checked=true;$('yes').disabled=false;$('no').disabled=false}else $('no').checked=true;
+ if($('xdate')&&!$('xdate').value){const d=new Date();$('xdate').value=new Date(d-d.getTimezoneOffset()*6e4).toISOString().slice(0,10)}
+ $('stypeShow').style.display='none';scrollTo(0,0)}
+const _sl=window.storyL;
+document.querySelectorAll('#menu .mb').forEach(b=>b.onclick=()=>{location.hash=b.dataset.m});
+$('back').onclick=()=>{location.hash=''};
+addEventListener('hashchange',()=>set(location.hash.slice(1)));
+// keep our labels after base script's input handler
+F.addEventListener('input',()=>{if(mode)$('storyL').textContent=M[mode].story[0]});F.addEventListener('change',()=>{if(mode)$('storyL').textContent=M[mode].story[0]});
+F.addEventListener('submit',e=>{if(!mode)return;if(e.defaultPrevented)return;const id=($('wo').value.trim()?'WO-'+$('wo').value.trim().replace(/^wo-?/i,''):'Unit '+$('unit').value.trim());
+ const A={open:'OPEN',update:'UPDATE',close:'CLOSE'}[mode];$('action').value=A;$('stype').value=A[0]+A.slice(1).toLowerCase()+' form';$('subj').value='Shop form - '+A+' - '+id});
+set(location.hash.slice(1));
+})();
+</script>
+<script>
+// Send via fetch to the DO Function (1 MB per request cap): shrink harder if needed, else split photos over several emails.
+(()=>{const URL_FN='https://faas-sfo3-7872a1dd.doserverless.co/api/v1/web/fn-34674e5e-3744-4f55-8f93-e73cc31df597/shop/submit';
+const F=document.getElementById('f'),B=document.getElementById('send'),CAP=900000;
+const b64=f=>new Promise((ok,no)=>{const r=new FileReader();r.onload=()=>ok(String(r.result).split(',')[1]);r.onerror=no;r.readAsDataURL(f)});
+async function squeeze(f,m,q){if(!f.type.startsWith('image/')||/gif/.test(f.type))return f;try{const bm=await createImageBitmap(f);const sc=Math.min(1,m/Math.max(bm.width,bm.height));const c=document.createElement('canvas');c.width=bm.width*sc|0;c.height=bm.height*sc|0;c.getContext('2d').drawImage(bm,0,0,c.width,c.height);const b=await new Promise(r=>c.toBlob(r,'image/jpeg',q));return b&&b.size<f.size?new File([b],f.name.replace(/\.\w+$/,'')+'.jpg',{type:'image/jpeg'}):f}catch(e){return f}}
+function fail(msg){B.disabled=false;B.textContent='Try again';document.querySelectorAll('.xtra').forEach(x=>x.remove());alert('NOT SENT: '+msg+'\nCheck your signal and tap Send again. If it keeps failing, call or text the shop.')}
+F.addEventListener('submit',async e=>{if(e.defaultPrevented)return;e.preventDefault();B.disabled=true;B.textContent='Sending... please wait';
+ try{const fd=new FormData(F),fields={},files=[];
+  for(const [k,v] of fd.entries()){if(v instanceof File){if(v.size)files.push({k,f:v})}else fields[k]=fields[k]?fields[k]+', '+v:v}
+  let list=files;for(const [m,q] of [[0,0],[1400,.6],[1100,.5],[900,.45]]){if(m)list=await Promise.all(list.map(async x=>({k:x.k,f:await squeeze(x.f,m,q)})));if(list.reduce((t,x)=>t+x.f.size,0)*1.37<CAP)break}
+  const enc=await Promise.all(list.map(async (x,i)=>({filename:x.k+'_'+(i+1)+'_'+x.f.name,content:await b64(x.f)})));
+  const parts=[[]];let sz=0;for(const a of enc){if(a.content.length>CAP)throw new Error('one photo is too big');if(sz+a.content.length>CAP&&parts[parts.length-1].length){parts.push([]);sz=0}parts[parts.length-1].push(a);sz+=a.content.length}
+  const n=parts.length;for(let i=0;i<n;i++){const fl=i===0?Object.assign({},fields):{'Note':'More photos for the form above','_honey':fields._honey||''};
+   fl.subject=fields.subject+(n>1?' (photos '+(i+1)+'/'+n+')':'');
+   B.textContent='Sending... '+(n>1?(i+1)+' of '+n:'please wait');
+   const r=await fetch(URL_FN,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fields:fl,files:parts[i]})});
+   let j={};try{j=await r.json()}catch(_){};if(!r.ok||!j.ok)throw new Error(j.error||('server error '+r.status))}
+  location.href='thanks.html'}catch(err){fail(err.message||'network error')}});
+})();
+</script>
+</body></html>
