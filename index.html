@@ -203,7 +203,7 @@ $('f').addEventListener('submit',e=>{if(e.defaultPrevented)return;
  document.querySelectorAll('.att input.file').forEach(inp=>{const fs=[...inp.files];if(fs.length<2)return;
   fs.slice(1).forEach((f,k)=>{const x=document.createElement('input');x.type='file';x.name=inp.name+'_'+(k+2);x.hidden=true;const dt=new DataTransfer();dt.items.add(f);x.files=dt.files;x.className='xtra';inp.after(x)});
   const dt=new DataTransfer();dt.items.add(fs[0]);inp.files=dt.files});
- const h=document.createElement('input');h.type='hidden';h.name='Attachment Count';
+ document.querySelectorAll('input[name="Attachment Count"]').forEach(x=>x.remove());const h=document.createElement('input');h.type='hidden';h.name='Attachment Count';
  h.value=[...document.querySelectorAll('.att input.file')].map(i=>i.name+': '+(i.files.length+document.querySelectorAll('input[name^="'+i.name+'_"]').length)).join('; ');$('f').appendChild(h)});
 addEventListener('pageshow',e=>{if(e.persisted){document.querySelectorAll('.xtra').forEach(x=>x.remove());$('send').disabled=false;$('send').textContent='Send to shop'}});
 })();
